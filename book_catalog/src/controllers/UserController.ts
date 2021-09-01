@@ -41,7 +41,7 @@ export const deleteUser = async (request: Request, response: Response) => {
   const user = await getRepository(User).findOne(request.params.id);
   const deletion = await getRepository(User).delete(request.params.id);
   if (deletion.affected) {
-    return response.json({ message: "user deletado", user });
+    return response.json({ message: "usuário deletado", user });
   }
   throw new Error("não foi possível deletar o usuário, tente novamente.");
 };
