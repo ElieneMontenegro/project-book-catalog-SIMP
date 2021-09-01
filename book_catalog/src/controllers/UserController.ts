@@ -1,26 +1,48 @@
-import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {User} from "../entity/User";
+import { Request, Response } from "express";
+import { getRepository } from "typeorm";
+import { User } from "../entities/User";
 
-export class UserController {
 
-    private userRepository = getRepository(User);
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
+//definir tipagens
+
+//GET '/users'
+export const getAllUsers = async (request: Request, response: Response) => {
+    const users = await getRepository(User).find();
+    return response.json(users)
+};
+
+//GET '/users/:id'
+export const getUser = async (request: Request, response: Response) => {
+    const user = await getRepository(User).findOne(request.params.id);
+    return response.json(user)
+};
+
+//POST '/users'
+export const createUser = async (request: Request, response: Response) => {
+    const user = await getRepository(User).save(request.body);
+    return response.json(user)
+};
+
+//UPDATE '/users/:id'
+export const updateUser = async (request: Request, response: Response) => {
+    const update = await getRepository(User).update(request.params.id, request.body);
+    if(update.affected){
+        const user = await getRepository(User).findOne(request.params.id);
+        return response.json(user)
     }
+    throw new Error('não foi possível atualizar o usuário, tente novamente.')
+    
+};
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
+
+//DELETE '/users/:id'
+export const deleteUser = async (request: Request, response: Response) => {
+    const deletion = await getRepository(User).delete(request.params.id);
+    if(deletion.affected){
+        const user = await getRepository(User).findOne(request.params.id);
+        return response.json(user)
     }
-
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
-    }
-
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOne(request.params.id);
-        await this.userRepository.remove(userToRemove);
-    }
-
-}
+    throw new Error('não foi possível deletar o usuário, tente novamente.')
+    
+};

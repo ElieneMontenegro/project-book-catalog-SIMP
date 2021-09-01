@@ -4,21 +4,21 @@
    "port": 5432,
    "username": "postgres",
    "password": "postgres",
-   "database": "book_catalog",
-   "synchronize": true,
+   "database": "postgres",
+   "synchronize": false,
    "logging": false,
    "entities": [
-      "src/entity/**/*.ts"
+      "src/entities/**/*.ts"
    ],
    "migrations": [
-      "src/migration/**/*.ts"
+      "src/migrations/**/*.ts"
    ],
    "subscribers": [
       "src/subscriber/**/*.ts"
    ],
    "cli": {
       "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
+      "migrationsDir": "src/migrations",
       "subscribersDir": "src/subscriber"
    }
 }

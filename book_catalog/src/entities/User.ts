@@ -1,6 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import { Book } from "./Book";
 
-@Entity()
+@Entity('users')
 export class User {
 
     @PrimaryGeneratedColumn('uuid')
@@ -18,4 +19,6 @@ export class User {
     @Column()
     profilePic: string;
 
+    @OneToMany(() => Book, book => book.id)
+    books: Book[]
 }

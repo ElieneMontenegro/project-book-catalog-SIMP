@@ -1,7 +1,8 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import { User } from "./User";
 
-@Entity()
-export class User {
+@Entity('books')
+export class Book {
 
     @PrimaryGeneratedColumn('uuid')
     id: number;
@@ -16,6 +17,9 @@ export class User {
     publisher: string;
 
     @Column()
-    edition: string;
+    edition: number;
+
+    @ManyToOne(() => User, user => user.books)
+    user: User
 
 }
