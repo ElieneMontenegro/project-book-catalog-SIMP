@@ -31,6 +31,6 @@ routes.get("/users/:id/books", getUserBooks);
 routes.get("/books/:bookId", getBook);
 routes.post("/users/:id/books", createBook);
 routes.put("/books/:bookId", updateBook);
-routes.delete("/books/:id", deleteBook);
+routes.delete("/books/:bookId", deleteBook);
 
 export default routes;

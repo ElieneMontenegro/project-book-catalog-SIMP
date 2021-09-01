@@ -1,6 +1,8 @@
 import { User } from "../entities/User";
 import { UserCreateRequest, UserUpdateRequest } from "../types/User";
 import * as bcrypt from "bcrypt";
+import { BookUpdateRequest } from "../types/Book";
+import { Book } from "../entities/Book";
 
 export const validateAndAddName = (name: string) => {
   if (name == null || name == undefined || name == "") {
@@ -57,4 +59,14 @@ export const validateUpdateRequest = async (
     user.profilePic = validateAndAddProfilePic(userRequest.profilePic); // integrar com Cloudnary
 
   return user;
+};
+
+export const validateUpdateBookInfo = (bookRequest: BookUpdateRequest) => {
+  const book = new Book();
+  if (bookRequest.title) book.title = bookRequest.title;
+  if (bookRequest.author) book.author = bookRequest.author;
+  if (bookRequest.edition) book.edition = bookRequest.edition;
+  if (bookRequest.publisher) book.publisher = bookRequest.publisher;
+
+  return book;
 };

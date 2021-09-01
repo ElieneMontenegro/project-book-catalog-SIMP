@@ -3,8 +3,6 @@ import { getRepository } from "typeorm";
 import { User } from "../entities/User";
 import * as UserService from "../services/UserService";
 
-//definir tipagens
-
 //GET '/users'
 export const getAllUsers = async (request: Request, response: Response) => {
   try {
