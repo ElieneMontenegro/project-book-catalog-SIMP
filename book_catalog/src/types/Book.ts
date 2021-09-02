@@ -5,7 +5,7 @@ export interface BookCreateRequest {
   author: string;
   publisher: string;
   edition: number;
-  book: User;
+  user: User;
 }
 
 export interface BookUpdateRequest {
@@ -13,5 +13,5 @@ export interface BookUpdateRequest {
   author?: string;
   publisher?: string;
   edition?: number;
-  book?: User;
+  user?: User;
 }

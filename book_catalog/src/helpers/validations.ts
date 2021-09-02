@@ -1,7 +1,6 @@
 import { User } from "../entities/User";
 import { UserCreateRequest, UserUpdateRequest } from "../types/User";
 import * as bcrypt from "bcrypt";
-import { BookUpdateRequest } from "../types/Book";
 import { Book } from "../entities/Book";
 
 export const validateAndAddName = (name: string) => {
@@ -32,7 +31,7 @@ export const validateCreateRequest = async (
 ): Promise<User> => {
   const user = new User();
 
-  user.name = validateAndAddName(userRequest.name);
+  user.name = userRequest.name;
 
   user.email = validateAndAddEmail(userRequest.email);
 
@@ -48,7 +47,7 @@ export const validateUpdateRequest = async (
 ): Promise<User> => {
   const user = new User();
 
-  if (userRequest.name) user.name = validateAndAddName(userRequest.name);
+  if (userRequest.name) user.name = userRequest.name;
 
   if (userRequest.email) user.email = validateAndAddEmail(userRequest.email);
 
@@ -59,14 +58,4 @@ export const validateUpdateRequest = async (
     user.profilePic = validateAndAddProfilePic(userRequest.profilePic); // integrar com Cloudnary
 
   return user;
-};
-
-export const validateUpdateBookInfo = (bookRequest: BookUpdateRequest) => {
-  const book = new Book();
-  if (bookRequest.title) book.title = bookRequest.title;
-  if (bookRequest.author) book.author = bookRequest.author;
-  if (bookRequest.edition) book.edition = bookRequest.edition;
-  if (bookRequest.publisher) book.publisher = bookRequest.publisher;
-
-  return book;
 };

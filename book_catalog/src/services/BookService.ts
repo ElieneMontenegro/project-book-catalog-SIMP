@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Book } from "../entities/Book";
 import { User } from "../entities/User";
-import { validateUpdateBookInfo } from "../helpers/validations";
 import { BookCreateRequest, BookUpdateRequest } from "../types/Book";
 
 export const getUserBooks = async (userId: string): Promise<Book[]> => {
@@ -27,16 +26,16 @@ export const createBook = async (
 // having trouble with this method
 export const updateBook = async (
   id: string,
-  bookRequest: BookUpdateRequest
+  bookId: string,
+  book: BookUpdateRequest
 ): Promise<Book> => {
-  const book = validateUpdateBookInfo(bookRequest);
-
-  const update = await getRepository(Book).update(id, book);
+  const user = await getRepository(User).findOne(id);
+  const update = await getRepository(Book).update(bookId, { ...book, user });
 
   if (update.affected) {
-    return getRepository(Book).findOne(id);
+    return await getRepository(Book).findOne(id);
   }
-  throw new Error("não foi possível atualizar o livro, tente novamente.");
+  throw new Error("não foi possível encontrar o usuário, tente novamente.");
 };
 
 export const deleteBook = async (id: string) => {

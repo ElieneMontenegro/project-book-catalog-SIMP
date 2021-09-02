@@ -13,13 +13,18 @@ export const getAllUsers = async (): Promise<User[]> => {
 };
 
 export const getUser = async (id: string): Promise<User> => {
-  return getRepository(User).findOne(id);
+  const user = await getRepository(User).findOne(id);
+  if (!user) {
+    throw new Error("usuário não encontrado");
+  }
+  return user;
 };
 
 export const createUser = async (
   userRequest: UserCreateRequest
 ): Promise<User> => {
   const user = await validateCreateRequest(userRequest);
+  user.books = [];
 
   return getRepository(User).save(user);
 };
@@ -29,7 +34,6 @@ export const updateUser = async (
   userRequest: UserUpdateRequest
 ): Promise<User> => {
   const user = await validateUpdateRequest(userRequest);
-
   const update = await getRepository(User).update(id, user);
 
   if (update.affected) {

@@ -17,7 +17,7 @@ export const getUserBooks = async (request: Request, response: Response) => {
 //GET '/books/:bookId'
 export const getBook = async (request: Request, response: Response) => {
   try {
-    const books = await BookService.getBook(request.params.id);
+    const books = await BookService.getBook(request.params.bookId);
     response.status(200).send(books);
   } catch (error) {
     response.status(404).send(error.message);
@@ -34,10 +34,14 @@ export const createBook = async (request: Request, response: Response) => {
   }
 };
 
-//UPDATE '/books/:bookId'
+//UPDATE 'users/:id/books/:bookId'
 export const updateBook = async (request: Request, response: Response) => {
   try {
-    const books = await BookService.updateBook(request.params.id, request.body);
+    const books = await BookService.updateBook(
+      request.params.id,
+      request.params.bookId,
+      request.body
+    );
     response.status(200).send(books);
   } catch (error) {
     response.status(404).send(error.message);
@@ -47,7 +51,7 @@ export const updateBook = async (request: Request, response: Response) => {
 //DELETE '/books/:bookId'
 export const deleteBook = async (request: Request, response: Response) => {
   try {
-    const books = await BookService.deleteBook(request.params.id);
+    const books = await BookService.deleteBook(request.params.bookId);
     response.status(200).send(books);
   } catch (error) {
     response.status(404).send(error.message);
