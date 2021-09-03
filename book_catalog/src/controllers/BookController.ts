@@ -51,8 +51,8 @@ export const updateBook = async (request: Request, response: Response) => {
 //DELETE '/books/:bookId'
 export const deleteBook = async (request: Request, response: Response) => {
   try {
-    const books = await BookService.deleteBook(request.params.bookId);
-    response.status(200).send(books);
+    const book = await BookService.deleteBook(request.params.bookId);
+    response.status(200).send(book);
   } catch (error) {
     response.status(404).send(error.message);
   }

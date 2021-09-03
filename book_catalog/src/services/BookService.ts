@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { Book } from "../entities/Book";
 import { User } from "../entities/User";
 import { BookCreateRequest, BookUpdateRequest } from "../types/Book";
+import { v4 as uuid } from "uuid";
 
 export const getUserBooks = async (userId: string): Promise<Book[]> => {
   return getRepository(Book).find({
@@ -19,11 +20,9 @@ export const createBook = async (
   book: BookCreateRequest
 ): Promise<Book> => {
   const user = await getRepository(User).findOne(userId);
-
   return getRepository(Book).save({ ...book, user });
 };
 
-// having trouble with this method
 export const updateBook = async (
   id: string,
   bookId: string,
@@ -33,7 +32,7 @@ export const updateBook = async (
   const update = await getRepository(Book).update(bookId, { ...book, user });
 
   if (update.affected) {
-    return await getRepository(Book).findOne(id);
+    return getRepository(Book).findOne(bookId);
   }
   throw new Error("não foi possível encontrar o usuário, tente novamente.");
 };
@@ -45,4 +44,5 @@ export const deleteBook = async (id: string) => {
   if (!deletion.affected) {
     throw new Error("não foi possível deletar o livro, tente novamente.");
   }
+  return book;
 };

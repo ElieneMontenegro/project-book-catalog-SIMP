@@ -19,7 +19,7 @@ import {
 
 import multer = require("multer");
 const upload = multer({
-  storage: multer.diskStorage({ destination: "../../imageUpload" }),
+  storage: multer.diskStorage({ destination: "../imageUpload" }),
   fileFilter: (req, file, cb) => {
     cb(null, true);
   },
@@ -38,7 +38,7 @@ routes.delete("/users/:id", deleteUser);
 routes.get("/users/:id/books", getUserBooks);
 routes.get("/books/:bookId", getBook);
 routes.post("/users/:id/books", createBook);
-routes.put("/books/:bookId", updateBook);
+routes.put("/users/:id/books/:bookId", updateBook);
 routes.delete("/books/:bookId", deleteBook);
 
 export default routes;
