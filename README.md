@@ -12,7 +12,6 @@
 - PostgreSQL
 - TypeORM
 - Docker
-- Jest
 
 ### Run this project with:
 
