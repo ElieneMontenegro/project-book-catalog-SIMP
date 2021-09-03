@@ -24,8 +24,7 @@ export const createUser = async (
 ): Promise<User> => {
   const user = await validateCreateRequest(userRequest);
 
-  const usuario = await getRepository(User).save(user);
-  return usuario;
+  return getRepository(User).save(user);
 };
 
 export const updateUser = async (

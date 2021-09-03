@@ -14,12 +14,10 @@ cloudinary.v2.config({
   api_secret: process.env.API_SECRET,
 });
 
-// integrar com Cloudnary
+// Cloudnary upload
 export const uploadAndAddProfilePic = async (profilePic: string) => {
-  console.log("cheguei até aqui");
   try {
-    const result = await cloudinary.v2.uploader.upload(profilePic);
-    console.log(result);
+    await cloudinary.v2.uploader.upload(profilePic);
   } catch (error) {
     console.error(error);
   }

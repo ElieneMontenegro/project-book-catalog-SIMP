@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entities/User";
+import { newUser } from "../helpers/users";
 import * as UserService from "../services/UserService";
 import { UserCreateRequest } from "../types/User";
 
@@ -26,12 +27,7 @@ export const getUser = async (request: Request, response: Response) => {
 
 //POST '/users'
 export const createUser = async (request: any, response: Response) => {
-  const userRequest: UserCreateRequest = {
-    name: request.body.name,
-    email: request.body.email,
-    password: request.body.password,
-    profilePic: request.file.path,
-  };
+  const userRequest = newUser(request);
 
   try {
     const user = await UserService.createUser(userRequest);
@@ -43,12 +39,7 @@ export const createUser = async (request: any, response: Response) => {
 
 //UPDATE '/users/:id'
 export const updateUser = async (request: Request, response: Response) => {
-  const userRequest: UserCreateRequest = {
-    name: request.body.name,
-    email: request.body.email,
-    password: request.body.password,
-    profilePic: request.file.path,
-  };
+  const userRequest = newUser(request);
 
   try {
     const user = await UserService.updateUser(request.params.id, userRequest);

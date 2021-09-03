@@ -19,7 +19,7 @@ import {
 
 import multer = require("multer");
 const upload = multer({
-  storage: multer.diskStorage({ destination: "imageUpload/" }),
+  storage: multer.diskStorage({ destination: "../../imageUpload" }),
   fileFilter: (req, file, cb) => {
     cb(null, true);
   },
@@ -32,7 +32,7 @@ routes.get("/", (request: Request, response: Response) => {
 routes.get("/users", getAllUsers);
 routes.get("/users/:id", getUser);
 routes.post("/users", upload.single("profilePic"), createUser);
-routes.put("/users/:id", updateUser);
+routes.put("/users/:id", upload.single("profilePic"), updateUser);
 routes.delete("/users/:id", deleteUser);
 
 routes.get("/users/:id/books", getUserBooks);
