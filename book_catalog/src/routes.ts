@@ -17,13 +17,21 @@ import {
   deleteBook,
 } from "./controllers/BookController";
 
+import multer = require("multer");
+const upload = multer({
+  storage: multer.diskStorage({ destination: "imageUpload/" }),
+  fileFilter: (req, file, cb) => {
+    cb(null, true);
+  },
+});
+
 routes.get("/", (request: Request, response: Response) => {
-  return response.json({ message: "hello world!" });
+  return response.json({ message: "servidor rodando!" });
 });
 
 routes.get("/users", getAllUsers);
 routes.get("/users/:id", getUser);
-routes.post("/users", createUser);
+routes.post("/users", upload.single("profilePic"), createUser);
 routes.put("/users/:id", updateUser);
 routes.delete("/users/:id", deleteUser);
 

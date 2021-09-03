@@ -3,7 +3,29 @@ import { UserCreateRequest, UserUpdateRequest } from "../types/User";
 import * as bcrypt from "bcrypt";
 import { Book } from "../entities/Book";
 import { userInfo } from "os";
-import { uploadPicture } from "../cloudinary/main";
+import * as cloudinary from "cloudinary";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+// integrar com Cloudnary
+export const uploadAndAddProfilePic = async (profilePic: string) => {
+  console.log("cheguei até aqui");
+  try {
+    const result = await cloudinary.v2.uploader.upload(profilePic);
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  return profilePic;
+};
 
 export const validateAndAddName = (name: string) => {
   if (name == null || name == undefined || name == "") {
@@ -12,7 +34,6 @@ export const validateAndAddName = (name: string) => {
 };
 
 export const validateAndAddEmail = (email: string): string => {
-  console.log(email);
   const regex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -23,15 +44,6 @@ export const validateAndAddEmail = (email: string): string => {
 export const validateAndHashPassword = (password: string): Promise<string> => {
   if (password.length >= 6) return bcrypt.hash(password, 10);
   else throw new Error("Senha precisa ter mais de 6 caracteres");
-};
-
-// integrar com Cloudnary
-export const uploadAndAddProfilePic = async (
-  profilePic: string
-): Promise<string> => {
-  await uploadPicture(profilePic);
-
-  return profilePic;
 };
 
 export const validateCreateRequest = async (
@@ -63,7 +75,7 @@ export const validateUpdateRequest = async (
     user.password = await validateAndHashPassword(userRequest.password);
 
   if (userRequest.profilePic)
-    user.profilePic = await uploadAndAddProfilePic(userRequest.profilePic); // integrar com Cloudnary
+    user.profilePic = await uploadAndAddProfilePic(userRequest.profilePic);
 
   return user;
 };

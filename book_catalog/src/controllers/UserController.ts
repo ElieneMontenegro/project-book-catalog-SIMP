@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entities/User";
 import * as UserService from "../services/UserService";
+import { UserCreateRequest } from "../types/User";
 
 //GET '/users'
 export const getAllUsers = async (request: Request, response: Response) => {
@@ -24,10 +25,16 @@ export const getUser = async (request: Request, response: Response) => {
 };
 
 //POST '/users'
-export const createUser = async (request: Request, response: Response) => {
+export const createUser = async (request: any, response: Response) => {
+  const userRequest: UserCreateRequest = {
+    name: request.body.name,
+    email: request.body.email,
+    password: request.body.password,
+    profilePic: request.file.path,
+  };
+
   try {
-    console.log(request.body);
-    const user = await UserService.createUser(request.body);
+    const user = await UserService.createUser(userRequest);
     response.status(200).send(user);
   } catch (error) {
     response.status(412).send(error.message);
@@ -36,8 +43,15 @@ export const createUser = async (request: Request, response: Response) => {
 
 //UPDATE '/users/:id'
 export const updateUser = async (request: Request, response: Response) => {
+  const userRequest: UserCreateRequest = {
+    name: request.body.name,
+    email: request.body.email,
+    password: request.body.password,
+    profilePic: request.file.path,
+  };
+
   try {
-    const user = await UserService.updateUser(request.params.id, request.body);
+    const user = await UserService.updateUser(request.params.id, userRequest);
     response.status(200).send(user);
   } catch (error) {
     response.status(412).send(error.message);

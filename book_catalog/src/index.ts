@@ -3,13 +3,12 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import routes from "./routes";
 import { createConnection } from "typeorm";
-import { env } from "process";
 
 const app = express();
 createConnection();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(routes);
 
