@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entities/User";
-import * as bcrypt from "bcrypt";
 import {
   validateCreateRequest,
   validateUpdateRequest,
@@ -24,7 +23,6 @@ export const createUser = async (
   userRequest: UserCreateRequest
 ): Promise<User> => {
   const user = await validateCreateRequest(userRequest);
-  user.books = [];
 
   return getRepository(User).save(user);
 };
@@ -34,8 +32,8 @@ export const updateUser = async (
   userRequest: UserUpdateRequest
 ): Promise<User> => {
   const user = await validateUpdateRequest(userRequest);
-  const update = await getRepository(User).update(id, user);
 
+  const update = await getRepository(User).update(id, user);
   if (update.affected) {
     return await getRepository(User).findOne(id);
   }

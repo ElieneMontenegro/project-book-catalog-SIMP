@@ -2,6 +2,8 @@ import { User } from "../entities/User";
 import { UserCreateRequest, UserUpdateRequest } from "../types/User";
 import * as bcrypt from "bcrypt";
 import { Book } from "../entities/Book";
+import { userInfo } from "os";
+import { uploadPicture } from "../cloudinary/main";
 
 export const validateAndAddName = (name: string) => {
   if (name == null || name == undefined || name == "") {
@@ -10,6 +12,7 @@ export const validateAndAddName = (name: string) => {
 };
 
 export const validateAndAddEmail = (email: string): string => {
+  console.log(email);
   const regex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -22,7 +25,12 @@ export const validateAndHashPassword = (password: string): Promise<string> => {
   else throw new Error("Senha precisa ter mais de 6 caracteres");
 };
 
-export const validateAndAddProfilePic = (profilePic: string) => {
+// integrar com Cloudnary
+export const uploadAndAddProfilePic = async (
+  profilePic: string
+): Promise<string> => {
+  await uploadPicture(profilePic);
+
   return profilePic;
 };
 
@@ -37,7 +45,7 @@ export const validateCreateRequest = async (
 
   user.password = await validateAndHashPassword(userRequest.password);
 
-  user.profilePic = validateAndAddProfilePic(userRequest.profilePic); // integrar com Cloudnary
+  user.profilePic = await uploadAndAddProfilePic(userRequest.profilePic);
 
   return user;
 };
@@ -55,7 +63,7 @@ export const validateUpdateRequest = async (
     user.password = await validateAndHashPassword(userRequest.password);
 
   if (userRequest.profilePic)
-    user.profilePic = validateAndAddProfilePic(userRequest.profilePic); // integrar com Cloudnary
+    user.profilePic = await uploadAndAddProfilePic(userRequest.profilePic); // integrar com Cloudnary
 
   return user;
 };

@@ -26,6 +26,7 @@ export const getUser = async (request: Request, response: Response) => {
 //POST '/users'
 export const createUser = async (request: Request, response: Response) => {
   try {
+    console.log(request.body);
     const user = await UserService.createUser(request.body);
     response.status(200).send(user);
   } catch (error) {
