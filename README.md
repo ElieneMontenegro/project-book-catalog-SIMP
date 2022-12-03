@@ -1,10 +1,10 @@
 # project-book-catalog-SIMP
 
-### Backend de um sistema para gestão de catálogo de livros
+### API for managing a book catalog.
 
-- [x] Cadastra os usuários e os livros daquele usuário
+- [x] Register users and books from those users.
 
-### Tecnologias utilizadas:
+### Tecnologies:
 
 - NodeJs
 - Express
@@ -17,3 +17,5 @@
 
 - yarn install
 - yarn dev
+
+
